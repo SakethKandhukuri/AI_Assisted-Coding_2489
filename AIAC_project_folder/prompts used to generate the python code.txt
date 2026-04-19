@@ -1,0 +1,254 @@
+﻿Prompts used in generation of code:
+
+
+
+
+Create a Python program to open webcam using OpenCV
+Write code to detect face from camera using OpenCV
+Generate a simple identity verification function using AI
+Create a program to capture image from webcam
+Write a function to analyze user behavior using basic logic
+Generate fraud detection code using risk calculation
+Create a decision system to approve or reject user request
+Combine all modules into one Python project
+Build a smart ration system using Python and AI
+Create a simple system to detect fraud in transactions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code:
+
+
+import cv2
+import numpy as np
+
+
+# -------------------------------
+# 1. FACE CAPTURE
+# -------------------------------
+def capture_face():
+    cap = cv2.VideoCapture(0)
+
+
+    if not cap.isOpened():
+        print("Error: Camera not working")
+        return None
+
+
+    print("Press 'c' to capture image")
+
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+
+        cv2.imshow("Camera", frame)
+
+
+        key = cv2.waitKey(1)
+        if key == ord('c'):
+            face_img = frame
+            break
+
+
+    cap.release()
+    cv2.destroyAllWindows()
+    return face_img
+
+
+
+
+
+
+# -------------------------------
+# 2. FACE DETECTION
+# -------------------------------
+def detect_face(img):
+    face_cascade = cv2.CascadeClassifier(
+        cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+    )
+
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+
+    if len(faces) == 0:
+        print("No face detected")
+        return None
+
+
+    for (x, y, w, h) in faces:
+        face = img[y:y+h, x:x+w]
+        return face
+
+
+
+
+# -------------------------------
+# 3. IDENTITY VERIFICATION
+# -------------------------------
+def verify_identity(face):
+    # Dummy AI output (replace with CNN later)
+    score = np.random.uniform(0.7, 0.95)
+    return score
+
+
+
+
+# -------------------------------
+# 4. BEHAVIOR ANALYSIS
+# -------------------------------
+def behavior_analysis(history):
+    avg = np.mean(history)
+    current = history[-1]
+
+
+    if current > avg * 1.5:
+        return "Abnormal", 0.3
+    else:
+        return "Normal", 0.8
+
+
+
+
+# -------------------------------
+# 5. FRAUD DETECTION
+# -------------------------------
+def fraud_detection(identity_score, behavior_score):
+    risk = (1 - identity_score) + (1 - behavior_score)
+
+
+    if risk > 1:
+        return "High Risk", 0.8
+    elif risk > 0.5:
+        return "Medium Risk", 0.5
+    else:
+        return "Low Risk", 0.2
+
+
+
+
+# -------------------------------
+# 6. DECISION ENGINE
+# -------------------------------
+def decision_engine(identity_score, behavior_score, fraud_score):
+    trust = (0.5 * identity_score) + \
+            (0.3 * behavior_score) + \
+            (0.2 * (1 - fraud_score))
+
+
+    if trust >= 0.7:
+        return "APPROVED"
+    elif trust >= 0.4:
+        return "APPROVED WITH ALERT"
+    else:
+        return "REJECTED"
+
+
+
+
+# -------------------------------
+# MAIN PROGRAM
+# -------------------------------
+if __name__ == "__main__":
+
+
+    print("SMART RATION SYSTEM STARTED")
+
+
+    # Step 1: Capture Face
+    image = capture_face()
+    if image is None:
+        exit()
+
+
+    # Step 2: Detect Face
+    face = detect_face(image)
+    if face is None:
+        exit()
+
+
+    # Step 3: Identity Check
+    identity_score = verify_identity(face)
+
+
+    # Step 4: Behavior Data (example)
+    user_history = [5, 6, 5, 7, 20]
+    behavior_status, behavior_score = behavior_analysis(user_history)
+
+
+   
+
+
+ # Step 5: Fraud Detection
+    fraud_status, fraud_score = fraud_detection(identity_score, behavior_score)
+
+
+    # Step 6: Decision
+    decision = decision_engine(identity_score, behavior_score, fraud_score)
+
+
+    # Output
+    print("\n--- RESULT ---")
+    print("Identity Score:", round(identity_score, 2))
+    print("Behavior:", behavior_status)
+    print("Fraud Risk:", fraud_status)
+    print("Final Decision:", decision)
